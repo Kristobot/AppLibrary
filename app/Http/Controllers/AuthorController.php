@@ -41,6 +41,7 @@ class AuthorController extends Controller
     public function store(StoreAuthorRequest $request)
     {
         $author = Author::create($request->validated());
+        $author->load('country');
         return new AuthorResource($author);
     }
 
@@ -50,6 +51,7 @@ class AuthorController extends Controller
     public function show(Author $author)
     {
         //
+        $author->load('country');
         return new AuthorResource($author);
     }
 

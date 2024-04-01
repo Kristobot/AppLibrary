@@ -26,7 +26,8 @@ class CopyController extends Controller
     public function store(StoreCopyRequest $request)
     {
         //
-        $copy = Copy::create($request->validated())->load(['book','status']);
+        $copy = Copy::create($request->validated())
+                    ->load(['book','status']);
         $copy->refresh();
         return new CopyResource($copy);
     }

@@ -7,11 +7,16 @@ use App\Http\Requests\UpdateLoanRequest;
 use App\Http\Resources\LoanResource;
 use App\Models\Copy;
 use App\Models\Loan;
+use App\Services\LoanService;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class LoanController extends Controller
 {
+
+    public function __construct(
+        public LoanService $loanService
+    ){}
 
     /**
      * Display a listing of the resource.
@@ -34,25 +39,9 @@ class LoanController extends Controller
     public function store(StoreLoanRequest $request)
     {
         //
-        $user = Auth()->user();
-        $loan = Loan::create([
-            'user_id' => $user->id
-        ]);
-        
-        foreach ($request->copies as $id) {
-            $copy = Copy::find($id);
-            $copy->update([
-                'copy_status_id' => 2
-            ]);
-        }
+        $loan = $this->loanService->create($request,$request->copies);
 
-        $loan->copies()->attach($request->copies);
-
-        $loan->refresh();
-
-        $loan->with(['copies' => function($query){
-            $query->with('book');
-        }]);
+        $loan->load(['copies.book'])->get();
 
         return new LoanResource($loan);
         
@@ -64,10 +53,8 @@ class LoanController extends Controller
     public function show(Loan $loan)
     {
         //
-        $loan->with(['copies' => function($query){
-            $query->with('book');
-        }]);
-
+        $loan->load(['copies.book'])->get();
+    
         return new LoanResource($loan);
     }
 
@@ -77,7 +64,8 @@ class LoanController extends Controller
     public function update(UpdateLoanRequest $request, Loan $loan)
     {
         //
-        $loan->update($request->validated());
+        $loan->copies()->sync($request->copies);
+        $loan->load('copies.books');
         return new LoanResource($loan);
     }
 
@@ -87,11 +75,7 @@ class LoanController extends Controller
     public function destroy(Loan $loan)
     {
         //
-        foreach ($loan->copies as $copy) {
-            $copy->update([
-                'copy_status_id' => 1
-            ]);
-        }
+        $this->loanService->returnCopies($loan);
         $loan->delete();
         return response()->json(['Success' => 'Recurso Eliminado'], Response::HTTP_OK);
     }

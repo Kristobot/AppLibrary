@@ -21,4 +21,9 @@ class Loan extends Model
         return $this->belongsToMany(Copy::class)
                     ->withTimestamps();
     }
+
+    public function scopeFilterByUser($query, int $id)
+    {
+        return $query->where('user_id',$id);
+    }
 }

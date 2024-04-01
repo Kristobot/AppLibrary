@@ -58,6 +58,7 @@ class BookController extends Controller
     {
         //
         $book->update($request->validated());
+        $book->load(['author','genres']);
         return new BookResource($book);
     }
 
