@@ -17,7 +17,11 @@ class DatabaseSeeder extends Seeder
             CountrySeeder::class,
             DistrictSeeder::class,
             GenreSeeder::class,
-            RoleSeeder::class
+            RoleSeeder::class,
+            AuthorSeeder::class,
+            BookSeeder::class,
+            BookGenreSeeder::class,
+            CopySeeder::class
         ]);
     }
 }
