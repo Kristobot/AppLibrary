@@ -25,7 +25,7 @@ class BookResource extends JsonResource
             'genres' => $this->whenLoaded('genres', function(){
                 return $this->genres->pluck('name');    
             }),
-            'stock' => $this->when($this->copies_count,$this->copies_count)
+            'stock' => $this->whenCounted('copies')
         ];
     }
 }

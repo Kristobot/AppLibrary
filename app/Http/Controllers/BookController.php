@@ -19,8 +19,13 @@ class BookController extends Controller
         //
         $books = Book::filterByGenreAndAuthor($request->author, $request->genre)
         ->with(['author', 'genres'])
-        ->withCount(['copies' => function($query){
-            $query->available();
+        //->withCount(['copies' => function($query){
+        //  $query->available();
+        //}])
+        ->withCount(['copies' => function($query) use ($request){
+            $query->when($request->available, function ($query){
+                $query->available();
+            });
         }])
         ->get();
         return BookResource::collection($books);
