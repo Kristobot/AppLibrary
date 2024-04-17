@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Enums\RoleEnum;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\User;
@@ -13,7 +14,8 @@ class RegisteredUserController extends Controller
     //
     public function register(RegisterUserRequest $request)
     {
-        $user = user::create($request->validated());
-        return new UserResource($user);
+        $user = User::create($request->validated());
+        $user->assignRole(RoleEnum::CLIENT);
+        return new UserResource($user->load('district'));
     }
 }

@@ -36,40 +36,40 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
 
     Route::group(['prefix' => 'book'], function(){
 
-        Route::get('/',[BookController::class,'index'])->can('viewAny','App\Models\Book');
-        Route::post('/', [BookController::class,'store'])->can('create', 'App\Models\Book');
-        Route::get('/{book}',[BookController::class,'show'])->can('view','book');
-        Route::match(['put','patch'], '/{book}',[BookController::class,'update'])->can('update','book');
-        Route::delete('/{book}',[BookController::class,'destroy'])->can('delete','book');
+        Route::get('/',[BookController::class,'index'])->name('books.index');
+        Route::post('/', [BookController::class,'store'])->name('books.create');
+        Route::get('/{book}',[BookController::class,'show'])->name('books.show');
+        Route::match(['put','patch'], '/{book}',[BookController::class,'update'])->name('books.update');
+        Route::delete('/{book}',[BookController::class,'destroy'])->name('books.delete');
 
     });
 
     Route::group(['prefix' => 'author'], function(){
 
-        Route::get('/',[AuthorController::class,'index'])->can('viewAny','App\Models\author');
-        Route::post('/', [AuthorController::class,'store'])->can('create', 'App\Models\author');
-        Route::get('/{author}',[AuthorController::class,'show'])->can('view','author');
-        Route::match(['put','patch'], '/{author}',[AuthorController::class,'update'])->can('update','author');
-        Route::delete('/{author}',[AuthorController::class,'destroy'])->can('delete','author');
+        Route::get('/',[AuthorController::class,'index'])->name('authors.index');
+        Route::post('/', [AuthorController::class,'store'])->name('authors.create');
+        Route::get('/{author}',[AuthorController::class,'show'])->name('authors.show');
+        Route::match(['put','patch'], '/{author}',[AuthorController::class,'update'])->name('authors.update');
+        Route::delete('/{author}',[AuthorController::class,'destroy'])->name('authors.delete');
 
     });
 
     Route::group(['prefix' => 'copy'], function(){
 
-        Route::get('/',[CopyController::class,'index'])->can('viewAny','App\Models\Copy');
-        Route::post('/', [CopyController::class,'store'])->can('create', 'App\Models\Copy');
-        Route::get('/{copy}',[CopyController::class,'show'])->can('view','copy');
-        Route::delete('/{copy}',[CopyController::class,'destroy'])->can('delete','copy');
+        Route::get('/',[CopyController::class,'index'])->name('copies.index');
+        Route::post('/', [CopyController::class,'store'])->name('copies.create');
+        Route::get('/{copy}',[CopyController::class,'show'])->name('copies.show');
+        Route::delete('/{copy}',[CopyController::class,'destroy'])->name('copies.delete');
 
     });
 
     Route::group(['prefix' => 'loan'], function(){
 
-        Route::get('/',[LoanController::class,'index'])->can('viewAny','App\Models\Loan');
-        Route::post('/', [LoanController::class,'store'])->can('create', 'App\Models\Loan');
-        Route::get('/{loan}',[LoanController::class,'show'])->can('view','loan');
-        Route::match(['put','patch'], '/{loan}',[LoanController::class,'update'])->can('update','loan');
-        Route::delete('/{loan}',[LoanController::class,'destroy'])->can('delete','loan');
+        Route::get('/',[LoanController::class,'index'])->name('loans.index');
+        Route::post('/', [LoanController::class,'store'])->name('loans.create');
+        Route::get('/{loan}',[LoanController::class,'show'])->name('loans.show');
+        Route::match(['put','patch'], '/{loan}',[LoanController::class,'update'])->name('loans.update');
+        Route::delete('/{loan}',[LoanController::class,'destroy'])->name('loans.delete');
 
     });
 });

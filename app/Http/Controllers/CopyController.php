@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCopyRequest;
+use App\Http\Resources\CopyCollection;
 use App\Http\Resources\CopyResource;
 use App\Models\Copy;
 use Illuminate\Http\Request;
@@ -10,6 +11,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CopyController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Copy::class);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -17,7 +22,7 @@ class CopyController extends Controller
     {
         //
         $copies = Copy::with(['book','status'])->get();
-        return CopyResource::collection($copies);
+        return new CopyCollection($copies);
     }
     
     /**

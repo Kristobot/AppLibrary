@@ -18,8 +18,9 @@ class UserResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
-            'role_id' => $this->role_id,
-            'district_id' => $this->district_id
+            'district_id' => $this->whenLoaded('district', function($district){
+                return $district->name;
+            })
         ];
     }
 }

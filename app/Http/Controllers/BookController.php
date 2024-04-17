@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
+use App\Http\Resources\BookCollection;
 use App\Http\Resources\BookResource;
 use App\Models\Book;
 use Illuminate\Http\Request;
@@ -11,6 +12,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class BookController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Book::class);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -19,16 +24,13 @@ class BookController extends Controller
         //
         $books = Book::filterByGenreAndAuthor($request->author, $request->genre)
         ->with(['author', 'genres'])
-        //->withCount(['copies' => function($query){
-        //  $query->available();
-        //}])
         ->withCount(['copies' => function($query) use ($request){
             $query->when($request->available, function ($query){
                 $query->available();
             });
         }])
         ->get();
-        return BookResource::collection($books);
+        return new BookCollection($books);
     }
 
     /**

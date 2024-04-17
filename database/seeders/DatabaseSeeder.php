@@ -18,10 +18,12 @@ class DatabaseSeeder extends Seeder
             DistrictSeeder::class,
             GenreSeeder::class,
             RoleSeeder::class,
+            PermissionsSeeder::class,
             AuthorSeeder::class,
             BookSeeder::class,
             BookGenreSeeder::class,
-            CopySeeder::class
+            CopySeeder::class,
+            UserSeeder::class
         ]);
     }
 }

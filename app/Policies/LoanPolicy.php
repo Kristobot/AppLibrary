@@ -15,7 +15,7 @@ class LoanPolicy
     public function viewAny(User $user): bool
     {
         //
-        return in_array($user->role_id, [User::IS_ADMIN, User::IS_LIBRARIAN]);
+        return $user->can('loans.index');
     }
 
     /**
@@ -24,7 +24,7 @@ class LoanPolicy
     public function view(User $user, Loan $loan): bool
     {
         //
-        return in_array($user->role_id, [User::IS_ADMIN, User::IS_LIBRARIAN]) || $user->id === $loan->user_id;
+        return $user->can('loans.show');
     }
 
     /**
@@ -33,7 +33,7 @@ class LoanPolicy
     public function create(User $user): bool
     {
         //
-        return in_array($user->role_id, [User::IS_ADMIN, User::IS_LIBRARIAN, User::IS_USER]);
+        return $user->can('loans.create');
     }
 
     /**
@@ -42,7 +42,7 @@ class LoanPolicy
     public function update(User $user, Loan $loan): bool
     {
         //
-        return $user->id === $loan->user_id;
+        return $user->can('loans.update');
     }
 
     /**
@@ -51,24 +51,6 @@ class LoanPolicy
     public function delete(User $user, Loan $loan): bool
     {
         //
-        return in_array($user->id, [User::IS_ADMIN, User::IS_LIBRARIAN]) || $user->id === $loan->user_id;
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Loan $loan): bool
-    {
-        //
-        return $user->id === $loan->user_id;
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Loan $loan): bool
-    {
-        //
-        return $user->id === $loan->user_id;
+        return $user->can('loans.delete');
     }
 }

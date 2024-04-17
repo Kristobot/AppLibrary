@@ -14,7 +14,7 @@ class BookPolicy
     public function viewAny(User $user): bool
     {
         //
-        return true;
+        return $user->can('books.index');
     }
 
     /**
@@ -23,7 +23,7 @@ class BookPolicy
     public function view(User $user, Book $book): bool
     {
         //
-        return true;
+        return $user->can('books.show');
     }
 
     /**
@@ -32,7 +32,7 @@ class BookPolicy
     public function create(User $user): bool
     {
         //
-        return in_array($user->role_id, [User::IS_ADMIN,User::IS_LIBRARIAN]);
+        return $user->can('books.create');
     }
 
     /**
@@ -41,7 +41,7 @@ class BookPolicy
     public function update(User $user, Book $book): bool
     {
         //
-        return in_array($user->role_id, [User::IS_ADMIN,User::IS_LIBRARIAN]);
+        return $user->can('books.update');
     }
 
     /**
@@ -50,6 +50,6 @@ class BookPolicy
     public function delete(User $user, Book $book): bool
     {
         //
-        return in_array($user->role_id, [User::IS_ADMIN,User::IS_LIBRARIAN]);
+        return $user->can('books.delete');
     }
 }

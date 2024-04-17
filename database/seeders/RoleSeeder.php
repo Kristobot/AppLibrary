@@ -2,9 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Enums\RoleEnum;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
 
 class RoleSeeder extends Seeder
 {
@@ -14,18 +16,9 @@ class RoleSeeder extends Seeder
     public function run(): void
     {
         //
-        $roles = [
-            'User',
-            'Admin',
-            'Librarian'
-        ];
-
-        foreach ($roles as $role) {
-            DB::table('roles')->insert([
-                'name' => $role,
-                'created_at' => now(),
-                'updated_at' => now()
-            ]);
+        foreach(RoleEnum::cases() as $role)
+        {
+            Role::create(['name' => $role]);
         }
     }
 }

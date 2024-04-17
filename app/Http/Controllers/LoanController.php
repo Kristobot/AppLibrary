@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreLoanRequest;
 use App\Http\Requests\UpdateLoanRequest;
+use App\Http\Resources\LoanCollection;
 use App\Http\Resources\LoanResource;
 use App\Models\Copy;
 use App\Models\Loan;
@@ -16,7 +17,10 @@ class LoanController extends Controller
 
     public function __construct(
         public LoanService $loanService
-    ){}
+    )
+    {
+        $this->authorizeResource(Loan::class);
+    }
 
     /**
      * Display a listing of the resource.
@@ -30,7 +34,7 @@ class LoanController extends Controller
             $query->with('book');
         }])->get();
 
-        return LoanResource::collection($loans);
+        return new LoanCollection($loans);
     }
 
     /**

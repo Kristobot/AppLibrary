@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\BulkStoreAuthorRequest;
 use App\Http\Requests\StoreAuthorRequest;
 use App\Http\Requests\UpdateAuthorRequest;
+use App\Http\Resources\AuthorCollection;
 use App\Http\Resources\AuthorResource;
 use App\Models\Author;
 use Illuminate\Http\Request;
@@ -12,6 +13,12 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AuthorController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->authorizeResource(Author::class);
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -26,7 +33,7 @@ class AuthorController extends Controller
         })
         ->get();
 
-        return AuthorResource::collection($authors);
+        return new AuthorCollection($authors);
     }
 
     public function bulkStore(BulkStoreAuthorRequest $request)
@@ -40,6 +47,7 @@ class AuthorController extends Controller
      */
     public function store(StoreAuthorRequest $request)
     {
+
         $author = Author::create($request->validated());
         $author->load('country');
         return new AuthorResource($author);
@@ -61,6 +69,7 @@ class AuthorController extends Controller
     public function update(UpdateAuthorRequest $request, Author $author)
     {
         //
+
         $author->update($request->validated());
 
         return new AuthorResource($author);

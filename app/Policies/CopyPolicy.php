@@ -14,7 +14,7 @@ class CopyPolicy
     public function viewAny(User $user): bool
     {
         //
-        return in_array($user->role_id, [User::IS_ADMIN, User::IS_LIBRARIAN]);
+        return $user->can('copies.index');
     }
 
     /**
@@ -23,7 +23,7 @@ class CopyPolicy
     public function view(User $user, Copy $copy): bool
     {
         //
-        return in_array($user->role_id, [User::IS_ADMIN, User::IS_LIBRARIAN]);
+        return $user->can('copies.show');
     }
 
     /**
@@ -32,7 +32,7 @@ class CopyPolicy
     public function create(User $user): bool
     {
         //
-        return in_array($user->role_id, [User::IS_ADMIN, User::IS_LIBRARIAN]);
+        return $user->can('copies.create');
     }
 
 
@@ -42,6 +42,6 @@ class CopyPolicy
     public function delete(User $user, Copy $copy): bool
     {
         //
-        return in_array($user->role_id, [User::IS_ADMIN, User::IS_LIBRARIAN]);
+        return $user->can('copies.delete');
     }
 }

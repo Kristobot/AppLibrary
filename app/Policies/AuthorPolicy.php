@@ -14,16 +14,16 @@ class AuthorPolicy
     public function viewAny(User $user): bool
     {
         //
-        return true;
+        return $user->can('authors.index');
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Author $author): bool
+    public function view(User $user, Author $author)
     {
         //
-        return true;
+        return $user->can('authors.show');
     }
 
     /**
@@ -32,7 +32,7 @@ class AuthorPolicy
     public function create(User $user): bool
     {
         //
-        return in_array($user->role_id, [User::IS_ADMIN, User::IS_LIBRARIAN]);
+        return $user->can('authors.create');
     }
 
     /**
@@ -41,7 +41,7 @@ class AuthorPolicy
     public function update(User $user, Author $author): bool
     {
         //
-        return in_array($user->role_id, [User::IS_ADMIN, User::IS_LIBRARIAN]);
+        return $user->can('authors.update');
     }
 
     /**
@@ -50,6 +50,6 @@ class AuthorPolicy
     public function delete(User $user, Author $author): bool
     {
         //
-        return in_array($user->role_id, [User::IS_ADMIN, User::IS_LIBRARIAN]);
+        return $user->can('authors.delete');
     }
 }

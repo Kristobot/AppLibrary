@@ -26,7 +26,6 @@ class RegisterUserRequest extends FormRequest
             'name' => ['required','string'],
             'email' => ['required','email','unique:users,email'],
             'password' => ['required','string'],
-            'role_id' => ['required','numeric','exists:roles,id'],
             'district_id' => ['required','numeric','exists:districts,id']
         ];
     }
